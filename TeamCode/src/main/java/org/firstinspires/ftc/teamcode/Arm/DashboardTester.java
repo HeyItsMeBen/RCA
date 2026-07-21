@@ -16,7 +16,7 @@ public class DashboardTester extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        Servo servo = hardwareMap.get(Servo.class, "ElbowHinge");
+        Servo servo = hardwareMap.get(Servo.class, "shoulderServo");
 
         telemetry = new MultipleTelemetry(
                 telemetry,
