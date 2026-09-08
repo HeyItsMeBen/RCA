@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 
-@TeleOp (name="Debug Controller Functions", group="Debug")
+@TeleOp (name="Debug Controller Functions", group="RC")
 public class ControllerDebug extends LinearOpMode {
 
     public GamepadEx gamepad;

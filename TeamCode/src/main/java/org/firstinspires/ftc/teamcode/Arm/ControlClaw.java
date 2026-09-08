@@ -8,15 +8,18 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config
-@TeleOp(name="Dashboard Servo Test", group="RC")
-public class DashboardTester extends LinearOpMode {
+@TeleOp(name="Control Claw", group="RC")
+public class ControlClaw extends LinearOpMode {
 
-    public static double ELBOW_SERVO_POSITION = 0.0;
+    public static double SHOULDER_POSITION = 0;
+    public static double timeToPosition = 5; //seconds
 
     @Override
     public void runOpMode() {
 
-        Servo servo = hardwareMap.get(Servo.class, "shoulderServo");
+        Servo claw = hardwareMap.get(Servo.class, "clawServo");
+
+        SlowRunning shoulder = new SlowRunning(claw, 0);
 
         telemetry = new MultipleTelemetry(
                 telemetry,
@@ -27,9 +30,10 @@ public class DashboardTester extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            servo.setPosition(ELBOW_SERVO_POSITION);
+            shoulder.runOverTime(SHOULDER_POSITION, timeToPosition);
 
-            telemetry.addData("Servo Position", ELBOW_SERVO_POSITION);
+            telemetry.addData("Shoulder Servo Position: ", shoulder.getPosition());
+
             telemetry.update();
 
             idle();

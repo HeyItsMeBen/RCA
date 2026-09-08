@@ -9,15 +9,21 @@ public class SlowRunning {
     private long lastTimeNanos;
     private boolean isFirstRun = true;
 
-    public SlowRunning(Servo servo) {
+    public SlowRunning(Servo servo, double startingPosition) {
         this.servo = servo;
-        this.currentPosition = servo.getPosition();
+        this.currentPosition = startingPosition;
         this.lastTimeNanos = System.nanoTime();
+
+//        this.servo = servo;
+//        this.currentPosition = startingPosition;
+//        this.lastTimeNanos = System.nanoTime();
     }
 
-    public void runOverTime(double targetPosition, double secondsForFullMove) {
+    public boolean runOverTime(double targetPosition, double secondsForFullMove) {
 
-        if (secondsForFullMove <= 0) {secondsForFullMove = 0.001;}
+        if (secondsForFullMove <= 0) {
+            secondsForFullMove = 0.001;
+        }
 
         long currentTimeNanos = System.nanoTime();
 
@@ -29,7 +35,9 @@ public class SlowRunning {
         double deltaTime = (currentTimeNanos - lastTimeNanos) / 1e9;
         lastTimeNanos = currentTimeNanos;
 
-        if (deltaTime > 0.1) {deltaTime = 0.1;}
+        if (deltaTime > 0.1) {
+            deltaTime = 0.1;
+        }
 
         double maxStep = (1.0 / secondsForFullMove) * deltaTime;
 
@@ -42,6 +50,8 @@ public class SlowRunning {
         }
 
         servo.setPosition(currentPosition);
+
+        return Math.abs(currentPosition - targetPosition) <= 0.01; // range of tolerance
     }
 
     public void resetTimer() {
